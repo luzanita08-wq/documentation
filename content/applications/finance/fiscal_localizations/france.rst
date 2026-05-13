@@ -2,45 +2,66 @@
 France
 ======
 
+.. |DGFiP| replace:: :abbr:`DGFiP (Direction générale des Finances publiques)`
+
 .. _localizations/france/configuration/modules:
 
 Modules
 =======
 
-The following modules related to the French localization are available:
+The following modules are installed automatically with the French localization:
 
 .. list-table::
-    :header-rows: 1
+   :header-rows: 1
+   :widths: 25 25 50
 
-    * - Name
-      - Technical name
-      - Description
-    * - :guilabel:`France - Accounting`
-      - `l10n_fr_account`
-      - French :ref:`fiscal localization package <fiscal_localizations/packages>` that applies only
-        to companies based in mainland France and doesn't include DOM-TOMs.
-    * - :guilabel:`France - Accounting Reports`
-      - `l10n_fr_reports`
-      - Export of the French VAT report, which can be sent to the DGFiP, an OGA, or a professional
-        accountant.
-    * - :guilabel:`France - Payroll with Accounting`
-      - `l10n_fr_hr_payroll_account`
-      - Includes the necessary accounting data for the French payroll rules.
-    * - :guilabel:`France - Factur-X integration with Chorus Pro`
-      - `l10n_fr_facturx_chorus_pro`
-      - Adds fields needed for :ref:`submitting invoices to Chorus Pro
-        <localizations/france/e-invoicing>`.
-    * - :guilabel:`France - FEC Import`
-      - `l10n_fr_fec_import`
-      - Import of standard FEC files, useful for importing accounting history.
-    * - :guilabel:`France - VAT Anti-Fraud Certification for Point of Sale (CGI 286 I-3 bis)`
-      - `l10n_fr_pos_cert`
-      - :ref:`Point of Sale VAT anti-fraud certification
-        <localizations/france/vat-anti-fraud-certification>`
+   * - Name
+     - Technical name
+     - Description
+   * - :guilabel:`France - Accounting`
+     - `l10n_fr_account`
+     - French :ref:`fiscal localization package <fiscal_localizations/packages>` that applies only
+       to companies based in mainland France and doesn't include DOM-TOMs.
+   * - :guilabel:`France - Accounting Reports`
+     - `l10n_fr_reports`
+     - Export of the French VAT report, which can be sent to DGFiP, an OGA, or a professional
+       accountant.
+   * - :guilabel:`France - VAT Anti-Fraud Certification for Point of Sale (CGI 286 I-3 bis)`
+     - `l10n_fr_pos_cert`
+     - :ref:`Point of Sale VAT anti-fraud certification
+       <localizations/france/vat-anti-fraud-certification>`.
+   * - :guilabel:`France - E-Invoicing (Approved Platform)`
+     - (`l10n_fr_pdp`)
+     - Support for mandatory electronic invoicing in France to send and receive documents via
+       the Odoo-approved platform.
+   * - :guilabel:`France - E-reporting for POS`
+     - `l10n_fr_pdp_reports_pos`
+     - PDP Flux 10 e-reporting for POS.
+
+Additionally, the following modules must be manually :ref:`installed <general/install>`:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 25 50
+
+   * - Name
+     - Technical name
+     - Description
+   * - :guilabel:`France - FEC Import`
+     - `l10n_fr_fec_import`
+     - Import of standard FEC files, useful for importing accounting history.
+   * - :guilabel:`France - Payroll with Accounting`
+     - `l10n_fr_hr_payroll_account`
+     - Includes the necessary accounting data for the French payroll rules.
+   * - :guilabel:`France - Peppol integration with Chorus Pro`
+     - `l10n_fr_facturx_chorus_pro`
+     - Adds fields needed for :ref:`submitting invoices to Chorus Pro
+       <localizations/france/e-invoicing>`.
 
 .. note::
-   The localization's core modules are installed automatically with the localization. The rest can
-   be manually :doc:`installed </applications/general/apps_modules>`.
+   In some cases, such as when upgrading to a version with additional modules, it is possible that
+   modules may not be installed automatically. Any missing modules can be manually :doc:`installed
+   <../../general/apps_modules>`.
 
 .. _localizations/france/loc-overview:
 
@@ -85,6 +106,231 @@ Accounting
 E-Invoicing
 -----------
 
+.. _localizations/france/e-invoicing-fac-elec:
+
+Facturation électronique
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Starting September 1, 2026, `electronic invoicing
+<https://www.impots.gouv.fr/professionnel/je-passe-la-facturation-electronique>`_ with Facturation
+électronique will become mandatory in France. From this date, all VAT-registered companies must
+receive electronic invoices via certified platforms. The requirements for issuing invoices will be
+phased in:
+
+- Large enterprises (GE) and mid-sized enterprises (ETI) will be expected to start issuing
+  electronic invoices on September 1, 2026.
+- Small and medium-sized enterprises (PME) and micro-enterprises will have until September 1, 2027,
+  to meet these requirements.
+
+For all VAT-taxable B2B transactions in France, affected businesses must:
+
+- :ref:`E-invoicing <localizations/france/e-invoicing-fac-elec-einvoicing>`: Issue and receive
+  invoices in electronic format.
+- :ref:`E-reporting <localizations/france/e-invoicing-fac-elec-reporting>`: Submit transaction and
+  payment data to |DGFiP|.
+
+Odoo is officially certified as an approved platform (plateforme agréée) for issuing electronic
+invoices. It supports the receipt of various formats (Facture-X, UBL, and CII), while sending
+documents exclusively in UBL format.
+
+.. note::
+   VAT-exempt transactions under Articles 261-261E are excluded.
+
+.. _localizations/france/e-invoicing-fac-elec-config:
+
+Configuration
+*************
+
+To send and receive invoices via Facturation électronique, the following configuration is required:
+
+#. Make sure the :guilabel:`France - E-Invoicing (Approved Platform)` (`l10n_fr_pdp`) module is
+   :doc:`installed </applications/general/apps_modules>`.
+#. Go to :menuselection:`Accounting --> Configuration --> Settings`, or :menuselection:`Invoicing
+   --> Configuration --> Settings`, scroll down to the :guilabel:`French Electronic Invoicing`
+   section, and click :guilabel:`Activate Electronic Invoicing`.
+#. In the :guilabel:`Send via French electronic invoicing` window, fill in the :guilabel:`Email`
+   field and click :guilabel:`Authenticate`:
+
+   - In the pop-up window, click :guilabel:`Begin authentication`.
+   - In the :guilabel:`Accessing the legal representatives of your company` window, click
+     :guilabel:`Check status`.
+   - In the :guilabel:`Please select who you are` window, select your name, and :guilabel:`Confirm`.
+   - To verify your identity, click :icon:`oi-launch` :guilabel:`Open authentication page`.
+   - To complete verification, click the :icon:`fa-plus` :guilabel:`(plus)` icon under
+     :guilabel:`Add your document here` to upload a copy of your ID, passport, or residence permit,
+     then click :guilabel:`Continue`.
+   - To electronically sign the :guilabel:`Attestation de désignation de plateforme agréée`
+     (Certificate of designation as an approved platform), click :guilabel:`Continue` to review it.
+     Then click :guilabel:`Continue` again and enable both options:
+
+     - XXX
+     - XXX
+
+   - Once the signature is confirmed, the signed attestation and terms and conditions can be
+     downloaded, if needed.
+   - Authentication is then successful, and the page can be closed.
+
+#. In the :guilabel:`Send via French electronic invoicing` window, click :guilabel:`Refresh`.
+#. Verify that the :guilabel:`Identifier` field is filled in with your :abbr:`SIREN (Système
+   d'identification du répertoire des entreprises, Business Directory Identification System)`
+   number, enable the :guilabel:`Pilot Phase` option, and click :guilabel:`Validate Registration`.
+#. Your French e-invoicing ID can now send and receive invoices and credit notes:
+
+   - :guilabel:`Incoming Invoices Journal`: Automatically set, update if necessary.
+   - :guilabel:`Enable e-reporting & sending of invoices to the PPF`: Enable this option if
+     e-reporting and e-invoicing are required for your company.
+   - :guilabel:`Participate in the pilot phase`: Enable the option.
+   - :guilabel:`E-Reporting Periodicity`: Set the periodicity of the :ref:`E-reporting
+     <localizations/france/e-invoicing-fac-elec-reporting>`.
+
+.. tip::
+   - Registration in the `electronic invoicing directory (annuaire)
+     <https://facturation.chorus-pro.gouv.fr/annuaire/authentification/connexion>`_ is effective the
+     day after it's completed.
+   - To disconnect from Peppol and Facturation électronique, click :guilabel:`Disconnect Peppol`.
+
+.. important::
+   - Businesses that are already registered on Peppol must also register separately on Facturation
+     électronique, as the two platforms are distinct.
+   - Once registered on Facturation électronique, users are automatically registered on Peppol. No
+     separate Peppol registration is then needed.
+
+.. _localizations/france/e-invoicing-fac-elec-contacts:
+
+Contacts
+^^^^^^^^
+
+Before sending an invoice to a contact using Facturation électronique, make sure the contact is
+registered as a Facturation électronique participant. To do so, follow these steps:
+
+#. Go to :menuselection:`Accounting --> Customers --> Customers`, or :menuselection:`Invoicing -->
+   Customers --> Customers` and access the customer's form.
+#. In the :guilabel:`Sales & Purchase` tab, make sure the :guilabel:`Company ID` field is completed
+   in the :guilabel:`Misc` section.
+
+   .. note::
+      In the :guilabel:`Accounting tab`, the :guilabel:`France FRCTC Electronic Ad` field is then
+      automatically filled in with the :guilabel:`Company ID` number.
+
+#. To verify the contact, click :guilabel:`Verify`. Its :guilabel:`French E-invoicing State` is
+   marked as :guilabel:`Partner is in the annuaire` if the contact is found on the Facturation
+   électronique network.
+
+.. _localizations/france/e-invoicing-fac-elec-einvoicing:
+
+E-invoicing with Facturation électronique
+*****************************************
+
+.. _localizations/france/e-invoicing-fac-elec-invoices:
+
+Send customer invoices
+^^^^^^^^^^^^^^^^^^^^^^
+
+Posted invoices to be sent via Facturation électronique are marked as :guilabel:`Ready to send` in
+the invoice's :guilabel:`E-invoicing Status` field.
+
+.. note::
+   All invoices that are ready to be sent via Facturation électronique can be viewed in the
+   following ways:
+
+   - In the :guilabel:`Invoices` list view, use the :icon:`oi-settings-adjust` (:guilabel:`adjust
+     settings`) button to add the :guilabel:`E-invoicing Status` column or apply the
+     :guilabel:`E-Invoicing Ready` filter in the search bar.
+   - In the Accounting dashboard, click :guilabel:`E-invoicing ready invoices` on the relevant sales
+     journal.
+
+Once an invoice is :ref:`created <accounting/invoice/creation>` and :ref:`confirmed
+<accounting/invoice/confirmation>`, follow these steps to send the invoice to the customer via
+Facturation électronique:
+
+#. Click on the customer's name on the invoice to open the customer form, and click the
+   :guilabel:`Accounting tab` to verify in the :guilabel:`Customer invoices` section that the
+   :ref:`contact <localizations/france/e-invoicing-fac-elec-contacts>` is registered in the
+   Facturation électronique annuaire.
+#. Click :guilabel:`Send` on the confirmed invoice form.
+#. In the :guilabel:`Print & Send` window, make sure the :guilabel:`French E-Invoicing` option is
+   enabled and click :guilabel:`Send`.
+
+   .. tip::
+      - :ref:`Multiple invoices <accounting/invoice/sending-multiple-invoices>` can also be sent in
+        batches via Facturation électronique.
+      - Set the preferred :ref:`Invoice sending <accounting/invoice/sending>` method for a customer
+        to :guilabel:`French E-Invoicing` in the :guilabel:`Customer Invoices` section of the
+        customer form's :guilabel:`Accounting` tab.
+
+In the :guilabel:`French Invoicing Info` section of the :guilabel:`Other Info` tab, the
+:guilabel:`E-Invoicing Status` is updated to :guilabel:`Done` once the invoices have been
+successfully delivered to the contact’s approved platform.
+
+.. note::
+   - Alternatively, the :guilabel:`E-Invoicing Status` column also displays the invoice delivery
+     status in the :guilabel:`Invoices` list view.
+   - For B2C or B2B international invoices, if an error occurs during delivery to the contact's
+     approved platform, the error details are displayed in the invoice's chatter.
+   - If an error occurs during the tax authority's delivery of the invoice, the error details are
+     displayed in the invoice's chatter.
+
+.. tip::
+   To manually trigger the scheduled action used to check the invoices' status, go to the
+   Accounting dashboard and click :guilabel:`Fetch E-invoicing Status` on the corresponding sales
+   journal.
+
+.. important::
+   :guilabel:`Reset to Draft` option:
+
+   - For B2B France invoices, the :guilabel:`Reset to Draft` option is not available for invoices
+     that have previously been sent in the :ref:`E-reporting
+     <localizations/france/e-invoicing-fac-elec-reporting>`.
+   - For B2C or B2B international invoices, if an invoice previously sent in :ref:`E-reporting
+     <localizations/france/e-invoicing-fac-elec-reporting>` needs to be reset to draft for
+     corrections, the E-reporting correction will be sent when the draft invoice is confirmed.
+
+.. _localizations/france/e-invoicing-fac-elec-bills:
+
+Receive vendor bills
+^^^^^^^^^^^^^^^^^^^^
+
+New documents received via Facturation électronique are checked multiple times a day. Documents
+received are automatically imported into the purchase journal set in the :guilabel:`Incoming
+Invoices Journal` section during configuration, and corresponding vendor bills are created as drafts
+and appear in the vendor bills list view. Access the vendor bill and click :guilabel:`Confirm` or
+:guilabel:`Cancel`.
+
+.. tip::
+   To manually trigger the scheduled action to retrieve incoming Facturation électronique documents,
+   go to the Accounting dashboard and click :guilabel:`Fetch E-invoicing Documents` on the main
+   Facturation électronique purchase journal.
+
+.. _localizations/france/e-invoicing-fac-elec-reporting:
+
+E-Reporting
+***********
+
+An automatic scheduled action submits an XML report with transaction and payment data to |DGFiP|
+every ten days. Go to :menuselection:`Accounting --> Reporting --> E-reporting` to view e-reports
+and their submission status:
+
+- :guilabel:`Ready`: Ready for submission.
+- :guilabel:`Error`: Submission failed, the e-report will be re-submitted in 5-7 days.
+- :guilabel:`Sent`: Submitted, awaiting confirmation.
+- :guilabel:`Completed`: Successfully processed.
+
+.. tip::
+   - To manually trigger the scheduled action, access the relevant e-reporting transaction in the
+     :guilabel:`E-Reporting` list view and click :guilabel:`Send`.
+   - To display the list of invoices included in an e-reporting transaction, click the
+     :guilabel:`Invoices` smart button, then click the :icon:`fa-caret-right` :guilabel:`(right
+     arrow)` icon to open the :guilabel:`Customer Invoice` list.
+
+.. seealso::
+   `Frequency and deadlines for submitting transaction and payment data (e-reporting)
+   <https://www.impots.gouv.fr/sites/default/files/media/1_metier/2_professionnel/EV/2_gestion/290_facturation_electronique/japprof_frequences-et-delais-de-transmission.pdf>`_
+
+.. _localizations/france/e-invoicing-choruspro:
+
+Chorus Pro
+~~~~~~~~~~
+
 The `Chorus Pro <https://portail.chorus-pro.gouv.fr/aife_csm>`_ portal, managed by the AIFE (Agence
 pour l'Informatique financière de l'État), is the official platform for submitting electronic
 invoices to French public entities. It allows businesses to send and manage invoices, track their
@@ -92,10 +338,10 @@ processing status, and access payment updates. Since January 2020, electronic in
 mandatory for all business-to-government (B2G) transactions in France. Odoo supports integration
 with Chorus Pro to submit invoices generated in Odoo.
 
-.. _localizations/france/e-invoicing-configuration:
+.. _localizations/france/e-invoicing-choruspro-configuration:
 
 Configuration
-~~~~~~~~~~~~~
+*************
 
 To send invoices to Chorus Pro, the following configuration is required:
 
@@ -107,15 +353,15 @@ To send invoices to Chorus Pro, the following configuration is required:
    <https://portail.chorus-pro.gouv.fr/aife_csm>`_ page, click :guilabel:`Créer un compte`, and
    create one.
 #. :ref:`Configure the relevant customers' contact form
-   <localizations/france/e-invoicing-contacts>`.
+   <localizations/france/e-invoicing-choruspro-contacts>`.
 
 .. seealso::
    `Chorus Pro documentation <https://portail.chorus-pro.gouv.fr/aife_documentation>`_
 
-.. _localizations/france/e-invoicing-contacts:
+.. _localizations/france/e-invoicing-choruspro-contacts:
 
 Customers
-*********
+^^^^^^^^^
 
 To submit invoices to Chorus Pro, configure the relevant customers' contact form as follows:
 
@@ -129,13 +375,15 @@ To submit invoices to Chorus Pro, configure the relevant customers' contact form
    - Make sure :guilabel:`France SIRET` is selected in the next field, then type `11000201100044`,
      the reference used by Chorus Pro.
 
-.. _localizations/france/e-invoicing-invoices:
+.. _localizations/france/e-invoicing-choruspro-invoices:
 
 Sending invoices to Chorus Pro
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+******************************
 
 To send invoices to Chorus Pro, follow these steps:
 
+#. Make sure the :guilabel:`SIRET` field is completed in the :doc:`company record
+   </applications/general/companies>`.
 #. Go to :menuselection:`Accounting --> Customers --> Invoices` and open or create the invoice.
 #. Make sure the following fields are filled in the :guilabel:`Other Info` tab:
 
@@ -499,8 +747,7 @@ financial activities and determines corporate taxes.
 
 `Teledec <https://www.teledec.fr>`_ is a platform used to prepare and submit tax returns using data
 from accounting records. To synchronize your accounting data stored in Odoo with Teledec and
-electronically send your company's *liasse fiscale* to the DGFiP (Direction Générale des Finances
-Publiques), follow these steps:
+electronically send your company's *liasse fiscale* to |DGFiP|, follow these steps:
 
 #. :ref:`localization/france/teledec-account`
 #. :ref:`localization/france/teledec-registration`
