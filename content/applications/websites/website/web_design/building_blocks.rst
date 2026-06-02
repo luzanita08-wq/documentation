@@ -116,6 +116,131 @@ section of the :guilabel:`Style` tab. For example, you can:
 
 Once you have made the desired changes, click :guilabel:`Save`.
 
+Prefill form fields with URL parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Form fields can be automatically filled using URL query parameters. This is useful for marketing
+campaigns, personalized links, or any scenario where you want to pre-populate a form for the
+visitor.
+
+.. _website/building_blocks/form/shareable:
+
+Enable shareable links
+**********************
+
+By default, query parameters prefill **every** form on the page. The shareable link feature is
+needed when a page contains multiple forms and you want a given URL to target only one of them.
+To generate a shareable link for a form:
+
+#. Open the website editor and click the form block.
+#. In the :guilabel:`Style` tab, under the :guilabel:`Form` section, enable the
+   :guilabel:`Share & Pre-fill` toggle option.
+#. A :guilabel:`Shareable Link` field appears with a unique fragment identifier
+   (e.g., ``http://example.com/#form-abc123``).
+#. Click the :icon:`fa-clipboard` (:guilabel:`Copy Link`) button to copy the link to your
+   clipboard.
+
+.. _website/building_blocks/form/field-name:
+
+Identify field names
+********************
+
+Each form field has a **Field Name** used as the query parameter key in the URL. To find it:
+
+#. Open the website editor and click a field in the form.
+#. In the :guilabel:`Style` tab, under the :guilabel:`Field` section, locate the
+   :guilabel:`Field Name` value.
+#. Use this exact name as the query parameter key when constructing the URL.
+
+.. _website/building_blocks/form/construct-url:
+
+Construct the prefill URL
+*************************
+
+Append query parameters to the shareable link using the format ``?field_name=value``. Separate
+multiple fields with ``&``.
+
+.. example::
+   For a contact form with the shareable link ``https://example.com/contact-us#form-abc123``,
+   prefill the :guilabel:`Name` and :guilabel:`Email` fields:
+
+   .. code-block:: text
+
+      https://example.com/contact-us?name=John+Doe&email_from=john@example.com#form-abc123
+
+   When a visitor opens this URL, the form fields are automatically populated with the provided
+   values.
+
+For :guilabel:`Selection`, :guilabel:`Radio`, and :guilabel:`Checkbox` fields, the parameter value
+must match one of the available option values exactly. Unmatched values are ignored. For single
+boolean checkboxes, the accepted truthy values are ``true``, ``1``, and ``on``; any other value
+leaves the checkbox unchecked.
+
+For **multiple-checkbox fields** (where the visitor may select more than one option), repeat the
+field name in the query string for each value:
+
+.. code-block:: text
+
+   https://example.com/contact-us?interests=sports&interests=tech#form-abc123
+
+.. note::
+   - Values provided by the backend always take precedence over URL parameters. This includes
+     server-side ``data-for`` values (e.g., on the Contact Us form) and the ``data-fill-with``
+     attribute that prefills name, phone, and email from the logged-in user's contact record.
+   - As a defense-in-depth measure, ``<script>`` blocks and HTML-looking tags are stripped from
+     parameter values before they are written to the form. Server-side escaping remains the
+     primary protection.
+   - Spaces in values can be encoded as ``+`` or ``%20``.
+
+.. warning::
+   Query parameters must appear **between** the path and the ``#`` fragment, never after it:
+
+   - ``/contact-us#form-abc?name=John`` incorrect (parameters after the ``#`` are part of the
+     fragment and silently ignored.)
+   - ``/contact-us?name=John/#form-abc`` incorrect (the trailing ``/`` placed between the last
+     value and the ``#`` is read as part of that value. Here, ``name`` becomes ``John/`` instead
+     of ``John``).
+
+   Avoid naming form fields after commonly-appended URL parameters. A field whose name matches one
+   of these keys will be silently prefilled whenever the URL carries that key, even if the visitor
+   did not intend to fill the form. Examples to avoid:
+
+   - Tracking/marketing: ``utm_source``, ``utm_medium``, ``utm_content``, etc.
+   - Odoo routing: ``debug``, ``lang``, ``redirect``, ``next``, etc.
+   - Search/pagination conventions: ``q``, ``s``, ``search``, ``page``, ``sort``, ``order``.
+
+   These keys are frequently added by analytics tools, ad networks, email link rewriters, or Odoo
+   itself. If you legitimately want to capture tracking values (e.g., for CRM campaign attribution)
+   , use a hidden field bearing that name rather than a visible input.
+
+.. _website/building_blocks/form/no-prefill:
+
+Disable prefill on specific fields
+**********************************
+
+To prevent a specific field from being prefilled by URL parameters while still allowing prefill on
+other fields in the same form, add the ``data-no-prefill="true"`` attribute to the field's wrapper
+element (the ``<div class="s_website_form_field">`` that contains the label and input).
+
+.. example::
+   In the page's HTML editor:
+
+   .. code-block:: html
+
+      <div class="s_website_form_field" data-no-prefill="true">
+          <label class="s_website_form_label">Verification code</label>
+          <input class="s_website_form_input" type="text" name="code"/>
+      </div>
+
+   Visitors opening ``?code=ABCD#form-abc`` will not see ``ABCD`` injected into this field, even
+   though other fields on the form continue to prefill normally.
+
+.. note::
+   - Backend ``data-for`` values and the ``data-fill-with`` attribute continue to apply to the
+     field regardless of ``data-no-prefill``, only URL parameter prefill is blocked.
+   - Editing this attribute currently requires the page HTML editor (:menuselection:`Site -->
+     HTML/CSS editor`).
+
 Add an Odoo contact form on a non-Odoo website
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
