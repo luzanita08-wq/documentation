@@ -49,6 +49,8 @@ Below are the available modules in Odoo for accounting use in the United States.
       :align: center
       :alt: The Generic Chart Template comes pre-configured for the US localization.
 
+.. _l10n_us/optional-modules:
+
 Modules installation
 --------------------
 
@@ -440,7 +442,7 @@ Once all check configurations are complete, :guilabel:`Save` the settings.
 .. important::
    Use one of the blank check formats to print the information of the check ad-hoc when needed. This
    requires the use of both :abbr:`MICR (Magnetic Ink Character Recognition)` ink or toner complying
-   with the standards for check printing, as well as `check quality paper
+   with the standards for check printing, as well as `check-quality paper
    <https://checkdepot.net/collections/blank-check-paper/products/top-format-blank-check-paper-cdt164>`_.
    Other information, such as the company name, bank account, and check number, is printed when
    creating the blank check.

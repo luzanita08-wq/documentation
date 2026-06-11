@@ -9,6 +9,8 @@ sent to suppliers with actual bank statements.
 Configuration
 =============
 
+.. _accounting/pay-checks/activate-methods:
+
 Activate checks payment methods
 -------------------------------
 
@@ -20,20 +22,16 @@ payment method as well as set up the :guilabel:`Check Layout`.
    - Once the :guilabel:`Checks` setting is activated, the **Checks** payment method is
      automatically set up in the :guilabel:`Outgoing Payments` tabs of **bank** journals.
    - Some countries require specific modules to print checks; such modules may be installed by
-     default. For instance, the :guilabel:`U.S. Checks Layout` module is required to print U.S.
-     checks.
+     default. For instance, the :ref:`US Checks Layout <l10n_us/optional-modules>` module is
+     required to :ref:`print US checks <l10n_us/writing-checks>`.
+   - Pre-printed check formats (non-blank checks) require pre-printed paper from a third-party
+     vendor.
+   - Use one of the blank check formats to print the information of the check ad-hoc when needed.
+     This requires the use of both :abbr:`MICR (Magnetic Ink Character Recognition)` ink or toner
+     complying with the standards for check printing. Other information, such as the company name,
+     bank account, and check number, is printed when creating the blank check.
 
-Compatible check stationery for printing checks
-===============================================
-
-United States
--------------
-
-For the United States, Odoo supports by default the check formats of:
-
-- **Quickbooks & Quicken**: check on top, stubs in the middle and bottom;
-- **Peachtree**: check in the middle, stubs on top and bottom;
-- **ADP**: check in the bottom, and stubs on the top.
+.. _accounting/pay-checks/pay-bill-check:
 
 Pay a supplier bill with a check
 ================================
