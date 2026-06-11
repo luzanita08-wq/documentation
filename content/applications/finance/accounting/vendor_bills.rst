@@ -99,8 +99,28 @@ In the :guilabel:`Invoice Lines` tab:
 - Update the :guilabel:`Quantity`, :guilabel:`Price`, and :doc:`Taxes <taxes>` fields if needed.
 
 .. tip::
+<<<<<<< cd7d0ae7ee48c7b7f2f252d94c32392c01bd6b14
    If the bill line does not correspond to an existing product in the database, click :guilabel:`Add
    a line` and enter a description for the bill line without linking it to a product.
+||||||| 427e7c1372efd4ec3ab3f596be289366e0f84ea6
+   If the bill line does not correspond to an existing product in the database, click the
+   :icon:`oi-view-list` :guilabel:`(bars)` icon to enter a description for the bill line without
+   linking it to a product.
+
+To access the product catalog and view all items in an organized display, click :doc:`Catalog
+</applications/inventory_and_mrp/inventory/warehouses_storage/inventory_management/product_catalog>`.
+When the products and quantities are selected, click :guilabel:`Back to Bill` to return to the
+vendor bill; the selected catalog items will appear in the vendor bill lines.
+=======
+   If the bill line does not correspond to an existing product in the database, click the
+   :icon:`oi-view-list` :guilabel:`(bars)` icon to enter a description for the bill line without
+   linking it to a product.
+
+To access the product catalog and view all items in an organized display, click :doc:`Catalog
+</applications/essentials/product_catalog>`. When the products and quantities are selected, click
+:guilabel:`Back to Bill` to return to the vendor bill; the selected catalog items will appear in the
+vendor bill lines.
+>>>>>>> 4ddd37bcb722e247bcc6cde4d61a8a5e4fb70fbf
 
 .. note::
    Multiple bills for the same purchase order may be issued if the vendor is on back-order and sends
