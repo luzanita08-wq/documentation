@@ -335,6 +335,32 @@ When ready for the second course, retrieve the order from the :ref:`Floor plan
 .. seealso::
    `Courses (video tutorial) <https://youtu.be/5W2S9HwSrDQ?si=Pauk9gyuypl4NU-M>`_
 
+Automatic course allocation
+---------------------------
+
+The automatic course allocation feature creates courses and automatically sorts products by course.
+To activate and configure the feature:
+
+#. Go to :menuselection:`Point of Sale --> Configuration --> Settings`, scroll down to the
+   :guilabel:`Preparation` section, and enable :guilabel:`Automatic course allocation`.
+#. Go to :menuselection:`Point of Sale --> Configuration --> POS Product Categories` and select a
+   product category.
+#. Enter a course in the :guilabel:`Course` field and click :guilabel:`Create`, or select an
+   existing course.
+
+When you select any products from that POS category, they are automatically sorted into the
+defined courses.
+
+By default, courses are organized by creation sequence (the first created appears first). If you
+create a new course later but want it to appear before existing ones, you must manually change the
+sequence order.
+
+To rearrange the course order:
+
+#. Activate :ref:`developer mode <developer-mode/activation>`.
+#. Navigate to :menuselection:`Point of Sale --> Configuration --> Courses`.
+#. Rearrange the courses by dragging and dropping them into the desired order.
+
 .. _pos/restaurant/orders-printing:
 
 Order printing
