@@ -10,7 +10,7 @@ In Odoo, some scheduled actions are active, by default, to ensure that certain f
 triggered automatically, however there are *also* many scheduled action options that appear in the
 database that are **not** activated by default.
 
-In Odoo *Subscriptions*, there are two scheduled actions that initiate the billing process for
+In Odoo **Subscriptions**, there are two scheduled actions that initiate the billing process for
 active recurring subscriptions, as well as when billing should stop due to subscription expiration.
 
 They are turned on, by default and can be deactivated at any time in order to manage subscriptions
@@ -27,20 +27,19 @@ With developer mode activated, navigate to :menuselection:`Settings app --> Tech
 Actions`.
 
 .. image:: scheduled_actions/scheduled-actions-technical-settings-page.png
-   :align: center
    :alt: The scheduled actions option under the technical menu in the Odoo Settings application.
 
 Doing so reveals a dedicated :guilabel:`Scheduled Actions` dashboard. On this page, there is a
 complete list of scheduled actions for the entire database.
 
-From here, enter `Subscription` in the search bar. Doing so provides three subscription-specific
-results. The following documentation focuses on the last two results in the list:
+From here, enter `Subscription` in the search bar. Doing so provides four subscription-specific
+results. The following documentation focuses on the last three results in the list:
 
 - :guilabel:`Sale Subscription: generate recurring invoices and payments`
 - :guilabel:`Sale Subscription: subscriptions expiration`
+- :guilabel:`Sale Subscription: send reminder for subscriptions with no token`
 
 .. image:: scheduled_actions/scheduled-actions-page-subscription-results.png
-   :align: center
    :alt: The subscription-related results on the scheduled actions page in Odoo Settings.
 
 Determine if a scheduled action is active by looking under the :guilabel:`Active` column, in the
@@ -78,7 +77,6 @@ app --> Configuration --> Settings`. Both accounts can be configured in the :gui
 Accounts` section.
 
 .. image:: scheduled_actions/deferred-settings-accounting.png
-   :align: center
    :alt: The necessary deferred account settings in the Odoo Accounting app's settings page.
 
 Once the correct accounts are entered in the :guilabel:`Deferred Expense` and :guilabel:`Deferred
@@ -97,7 +95,6 @@ On a confirmed subscription sales order form, focus on the :guilabel:`Recurring 
 :guilabel:`Date of Next Invoice` fields.
 
 .. image:: scheduled_actions/confirmed-subscription-sales-order-fields.png
-   :align: center
    :alt: A confirmed subscription sales order in the Odoo Subscriptions application.
 
 The scheduled action creates an invoice when today's date is the same date as the :guilabel:`Date of
@@ -125,11 +122,12 @@ a :guilabel:`Payment Token` on the account.
 To check if there is a :guilabel:`Payment Token`, open the :guilabel:`Other Info` tab, and look at
 the :guilabel:`Payment Token` field, under the :guilabel:`Subscription` section.
 
-If there is no :guilabel:`Payment Token`, the invoice is created, and sent to the customer. The
-payment **must** be registered manually in this case.
+If there is no :guilabel:`Payment Token`, the system uses the :guilabel:`Sale Subscription: send
+reminder for subscriptions with no token` scheduled action to send a payment reminder email to the
+subscriber. After the subscriber has manually made a payment, an invoice is generated for the
+subscription.
 
 .. image:: scheduled_actions/payment-token-field.png
-   :align: center
    :alt: The Payment Token field under the Other Info tab on a subscription sales order form.
 
 .. warning::
@@ -166,7 +164,6 @@ First, the :guilabel:`Sale Subscription: subscriptions expiration` scheduled act
 the end date has passed, which is configured on the subscription sales order.
 
 .. image:: scheduled_actions/subscription-expiration-date.png
-   :align: center
    :alt: The expiration date on a subscription sales order in Odoo Subscriptions.
 
 Then, the :guilabel:`Sale Subscription: subscriptions expiration` scheduled action checks if the
@@ -177,7 +174,6 @@ product, and click the :guilabel:`Invoices` smart button. Then, look at the :gui
 column.
 
 .. image:: scheduled_actions/invoices-invoice-date-column.png
-   :align: center
    :alt: The Invoice Date column on subscriptions invoice page in Odoo Subscriptions app.
 
 Unpaid subscriptions with an :guilabel:`Invoice Date` that are past the determined number of days in
@@ -185,7 +181,6 @@ the :guilabel:`Automatic Closing` field of a :guilabel:`Recurring Plan` are auto
 the :guilabel:`Sale Subscription: subscriptions expiration` scheduled action.
 
 .. image:: scheduled_actions/automatic-closing-field.png
-   :align: center
    :alt: The Automatic Closing field on a Recurring Plan form in Odoo Subscriptions.
 
 For example, if the next invoice date is July 1st, and the :guilabel:`Automatic Closing` is set to
